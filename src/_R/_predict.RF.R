@@ -44,10 +44,8 @@ status <- matrix(0, nrow <- nrow(data), ncol = 1)
 for (i in 1:nrow(data)){
   tempStr <- data[i,1]
   
-  if (regexpr('sp', tempStr)[1] == 1)
+  if ((regexpr('letter', tempStr)[1] == 1))
     status[i] <- 1
-  else if ((regexpr('letter', tempStr)[1] == 1))
-    status[i] <- 2
   else
     status[i] <- 0
     
