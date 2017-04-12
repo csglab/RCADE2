@@ -17,7 +17,7 @@ Motif discovery from ChIP-seq data is often limited by presence of non-targeted 
  
 To test the pipeline, execute this command:
 
-> bash RCOpt.sh MyTestJob examples/CTCF/CTCF.fasta examples/CTCF/GSM1407629.500bp.fasta
+> bash RCOpt.sh MyTestJob examples/CTCF/CTCF.fasta examples/CTCF/GSM1407629.top500summits.500bp.fasta
 
 This should create a “./out/MyTestJob” folder, with the RCADE output files described below.
  
