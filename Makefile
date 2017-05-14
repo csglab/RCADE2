@@ -2,8 +2,9 @@ MAKE = make		#change this line if you are using a different GNU make software
 
 dirFASTAtoRF = ./src/FASTAtoRF
 dirRCOpt = ./src/RCOpt
+dirRC = ./src/RC
 
-all: MK_dir CC_FASTAtoRF CC_RCOpt RM_objectFiles
+all: MK_dir CC_FASTAtoRF CC_RCOpt CC_RC RM_objectFiles
 
 MK_dir:
 	mkdir -p ./bin
@@ -14,8 +15,11 @@ CC_FASTAtoRF: $(dirFASTAtoRF)/Makefile
 CC_RCOpt: $(dirRCOpt)/Makefile
 	$(MAKE) -C $(dirRCOpt)
 
+CC_RC: $(dirRC)/Makefile
+	$(MAKE) -C $(dirRC)
+
 RM_objectFiles:
-	rm -f $(dirFASTAtoRF)/*.o $(dirRCOpt)/*.o 
+	rm -f $(dirFASTAtoRF)/*.o $(dirRCOpt)/*.o $(dirRC)/*.o 
 
 clean:
-	rm -f $(dirFASTAtoRF)/*.o $(dirRCOpt)/*.o ./bin/*
+	rm -f $(dirFASTAtoRF)/*.o $(dirRCOpt)/*.o $(dirRC)/*.o ./bin/*
