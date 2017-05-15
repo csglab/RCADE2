@@ -73,7 +73,8 @@ for (i in seq(from = 1, to = nrow(ChangePositions) - 1, by = 2)){
   string <- Block[1,1]
   string <- as.character(string)
   indX <- which(strsplit(string, "")[[1]]=="x")
-  stepInfo <- strtoi(substr(string, indX + 1, indX + 1))
+  indsC <- which(strsplit(string, "")[[1]]==";")
+  stepInfo <- strtoi(substr(string, indX + 1, indsC[1] - 1))
   
   if (stepInfo == 2){
     
@@ -83,8 +84,8 @@ for (i in seq(from = 1, to = nrow(ChangePositions) - 1, by = 2)){
     seqLogicalStatusRZF <- rep(patternRZF, (nrow(Block) / stepInfo))  # logical sequence for RZF
     seqLogicalStatusLZF <- rep(patternLZF, (nrow(Block) / stepInfo))  # logical sequence for LZF
     
-    data[ChangePositions[i,1]:ChangePositions[i,2], nofCol + 1] <- as.matrix(seqLogicalStatusRZF)  # add logical status of for RZF
-    data[ChangePositions[i,1]:ChangePositions[i,2], nofCol + 2] <- as.matrix(seqLogicalStatusLZF)  # add logical status of for LZF
+    data[ChangePositions[i,1]:ChangePositions[i,2], nofCol + 1] <- as.matrix(seqLogicalStatusRZF)  # add logical status for RZF
+    data[ChangePositions[i,1]:ChangePositions[i,2], nofCol + 2] <- as.matrix(seqLogicalStatusLZF)  # add logical status for LZF
     
   }else if (stepInfo > 2){
     
@@ -96,9 +97,9 @@ for (i in seq(from = 1, to = nrow(ChangePositions) - 1, by = 2)){
     seqLogicalStatusLZF <- rep(patternLZF, (nrow(Block) / stepInfo))  # logical sequence for LZF
     seqLogicalStatusMZF <- rep(patternMZF, (nrow(Block) / stepInfo))  # logical sequence for MZF
     
-    data[ChangePositions[i,1]:ChangePositions[i,2], nofCol + 1] <- as.matrix(seqLogicalStatusRZF)  # add logical status of for RZF
-    data[ChangePositions[i,1]:ChangePositions[i,2], nofCol + 2] <- as.matrix(seqLogicalStatusLZF)  # add logical status of for LZF
-    data[ChangePositions[i,1]:ChangePositions[i,2], nofCol + 3] <- as.matrix(seqLogicalStatusMZF)  # add logical status of for LZF
+    data[ChangePositions[i,1]:ChangePositions[i,2], nofCol + 1] <- as.matrix(seqLogicalStatusRZF)  # add logical status for RZF
+    data[ChangePositions[i,1]:ChangePositions[i,2], nofCol + 2] <- as.matrix(seqLogicalStatusLZF)  # add logical status for LZF
+    data[ChangePositions[i,1]:ChangePositions[i,2], nofCol + 3] <- as.matrix(seqLogicalStatusMZF)  # add logical status for LZF
   }
 }
 
