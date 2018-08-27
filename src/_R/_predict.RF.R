@@ -23,7 +23,7 @@ rm(list = ls())
 
 #############################################################################
 
-#setwd("/Users/bdogan/Documents/Research/RecognitionCode2/RCADE3/src/_R")
+# setwd("/home/bdogan/utilities/RCADE2/src/_R/")
 
 library(randomForest)
 
@@ -34,8 +34,9 @@ srcDir <- "./src/_R" # replace this with srcDir <- "." if testing the script out
 
 data <- read.csv(paste0(inputDir,"/_predict.in"),sep="\t")
 
-#srcDir <- "/Users/bdogan/Documents/Research/RecognitionCode2/RCADE3/src/_R"
-#data <- read.csv("_predict.in", sep = "\t")
+# srcDir <- "."
+# inputDir <- "/home/bdogan/utilities/RCADE2/tmp/jobQ96SR6"
+# data <- read.csv(paste0(inputDir,"/_predict.in"),sep="\t")
 
 nofCol <- ncol(data)
 
@@ -78,8 +79,8 @@ for (i in seq(from = 1, to = nrow(ChangePositions) - 1, by = 2)){
   
   if (stepInfo == 2){
     
-    patternRZF <- c(rep(T, stepInfo-1), F)
-    patternLZF <- c(rep(F, stepInfo-1), T)
+    patternRZF <- c(rep(F, stepInfo-1), T)
+    patternLZF <- c(rep(T, stepInfo-1), F)
     
     seqLogicalStatusRZF <- rep(patternRZF, (nrow(Block) / stepInfo))  # logical sequence for RZF
     seqLogicalStatusLZF <- rep(patternLZF, (nrow(Block) / stepInfo))  # logical sequence for LZF
@@ -89,8 +90,8 @@ for (i in seq(from = 1, to = nrow(ChangePositions) - 1, by = 2)){
     
   }else if (stepInfo > 2){
     
-    patternRZF <- c(rep(T, stepInfo-1), F)
-    patternLZF <- c(F, rep(T, stepInfo-1))
+    patternRZF <- c(rep(F, stepInfo-1), T)
+    patternLZF <- c(T, rep(F, stepInfo-1))
     patternMZF <- c(F, rep(T, stepInfo-2), F)
     
     seqLogicalStatusRZF <- rep(patternRZF, (nrow(Block) / stepInfo))  # logical sequence for RZF
@@ -242,11 +243,11 @@ for (k in 1:nrow(covariates)){
         featExtMethod <- BestRZF[i] # which features, 4 residues, 7 residues or 12 residues
         
         if (featExtMethod == 1)
-          AASeq <- c(as.matrix(covariates[k, c(6, 8, 9, 12)]), as.matrix(covariates[k+1, c(6, 8, 9, 12)]))
+          AASeq <- c(as.matrix(covariates[k, c(6, 8, 9, 12)]), as.matrix(covariates[k-1, c(6, 8, 9, 12)]))
         else if (featExtMethod == 2)
-          AASeq <- c(as.matrix(covariates[k, c(3, 5, 6, 7, 8, 9, 12)]), as.matrix(covariates[k+1, c(3, 5, 6, 7, 8, 9, 12)]))
+          AASeq <- c(as.matrix(covariates[k, c(3, 5, 6, 7, 8, 9, 12)]), as.matrix(covariates[k-1, c(3, 5, 6, 7, 8, 9, 12)]))
         else if (featExtMethod == 3)
-          AASeq <- c(as.matrix(covariates[k,]), as.matrix(covariates[k+1,]))
+          AASeq <- c(as.matrix(covariates[k,]), as.matrix(covariates[k-1,]))
         
         InputData <- ExtractFeature(AASeq)
         pred <- PredictbyRF(InputData, RZFModels[[i]])
@@ -283,11 +284,11 @@ for (k in 1:nrow(covariates)){
         featExtMethod <- BestLZF[i] # which features, 4 residues, 7 residues or 12 residues
         
         if (featExtMethod == 1)
-          AASeq <- c(as.matrix(covariates[k, c(6, 8, 9, 12)]), as.matrix(covariates[k-1, c(6, 8, 9, 12)]))
+          AASeq <- c(as.matrix(covariates[k, c(6, 8, 9, 12)]), as.matrix(covariates[k+1, c(6, 8, 9, 12)]))
         else if (featExtMethod == 2)
-          AASeq <- c(as.matrix(covariates[k, c(3, 5, 6, 7, 8, 9, 12)]), as.matrix(covariates[k-1, c(3, 5, 6, 7, 8, 9, 12)]))
+          AASeq <- c(as.matrix(covariates[k, c(3, 5, 6, 7, 8, 9, 12)]), as.matrix(covariates[k+1, c(3, 5, 6, 7, 8, 9, 12)]))
         else if (featExtMethod == 3)
-          AASeq <- c(as.matrix(covariates[k,]), as.matrix(covariates[k-1,]))
+          AASeq <- c(as.matrix(covariates[k,]), as.matrix(covariates[k+1,]))
         
         InputData <- ExtractFeature(AASeq)
         pred <- PredictbyRF(InputData, LZFModels[[i]])
@@ -297,7 +298,7 @@ for (k in 1:nrow(covariates)){
       
     } # end for (i in 1:12)
     
-  }else if (logStat[1] == TRUE && logStat[2] == TRUE && logStat[3] == TRUE){ # use table for MZF case
+  }else if (logStat[1] == FALSE && logStat[2] == FALSE && logStat[3] == TRUE){ # use table for MZF case
     
     result <- NULL
     
@@ -324,11 +325,11 @@ for (k in 1:nrow(covariates)){
         featExtMethod <- BestRZF[i] # which features, 4 residues, 7 residues or 12 residues
         
         if (featExtMethod == 1)
-          AASeq <- c(as.matrix(covariates[k, c(6, 8, 9, 12)]), as.matrix(covariates[k+1, c(6, 8, 9, 12)]))
+          AASeq <- c(as.matrix(covariates[k, c(6, 8, 9, 12)]), as.matrix(covariates[k-1, c(6, 8, 9, 12)]))
         else if (featExtMethod == 2)
-          AASeq <- c(as.matrix(covariates[k, c(3, 5, 6, 7, 8, 9, 12)]), as.matrix(covariates[k+1, c(3, 5, 6, 7, 8, 9, 12)]))
+          AASeq <- c(as.matrix(covariates[k, c(3, 5, 6, 7, 8, 9, 12)]), as.matrix(covariates[k-1, c(3, 5, 6, 7, 8, 9, 12)]))
         else if (featExtMethod == 3)
-          AASeq <- c(as.matrix(covariates[k,]), as.matrix(covariates[k+1,]))
+          AASeq <- c(as.matrix(covariates[k,]), as.matrix(covariates[k-1,]))
         
         InputData <- ExtractFeature(AASeq)
         pred <- PredictbyRF(InputData, RZFModels[[i]])
@@ -341,11 +342,11 @@ for (k in 1:nrow(covariates)){
         featExtMethod <- BestLZF[i] # which features, 4 residues, 7 residues or 12 residues
         
         if (featExtMethod == 1)
-          AASeq <- c(as.matrix(covariates[k, c(6, 8, 9, 12)]), as.matrix(covariates[k-1, c(6, 8, 9, 12)]))
+          AASeq <- c(as.matrix(covariates[k, c(6, 8, 9, 12)]), as.matrix(covariates[k+1, c(6, 8, 9, 12)]))
         else if (featExtMethod == 2)
-          AASeq <- c(as.matrix(covariates[k, c(3, 5, 6, 7, 8, 9, 12)]), as.matrix(covariates[k-1, c(3, 5, 6, 7, 8, 9, 12)]))
+          AASeq <- c(as.matrix(covariates[k, c(3, 5, 6, 7, 8, 9, 12)]), as.matrix(covariates[k+1, c(3, 5, 6, 7, 8, 9, 12)]))
         else if (featExtMethod == 3)
-          AASeq <- c(as.matrix(covariates[k,]), as.matrix(covariates[k-1,]))
+          AASeq <- c(as.matrix(covariates[k,]), as.matrix(covariates[k+1,]))
         
         InputData <- ExtractFeature(AASeq)
         pred <- PredictbyRF(InputData, LZFModels[[i]])
@@ -358,11 +359,11 @@ for (k in 1:nrow(covariates)){
         featExtMethod <- BestMZF[i] # which features, 4 residues, 7 residues or 12 residues
         
         if (featExtMethod == 1)
-          AASeq <- c(as.matrix(covariates[k-1, c(6, 8, 9, 12)]), as.matrix(covariates[k, c(6, 8, 9, 12)]), as.matrix(covariates[k+1, c(6, 8, 9, 12)]))
+          AASeq <- c(as.matrix(covariates[k+1, c(6, 8, 9, 12)]), as.matrix(covariates[k, c(6, 8, 9, 12)]), as.matrix(covariates[k-1, c(6, 8, 9, 12)]))
         else if (featExtMethod == 2)
-          AASeq <- c(as.matrix(covariates[k-1, c(3, 5, 6, 7, 8, 9, 12)]), as.matrix(covariates[k, c(3, 5, 6, 7, 8, 9, 12)]), as.matrix(covariates[k+1, c(3, 5, 6, 7, 8, 9, 12)]))
+          AASeq <- c(as.matrix(covariates[k+1, c(3, 5, 6, 7, 8, 9, 12)]), as.matrix(covariates[k, c(3, 5, 6, 7, 8, 9, 12)]), as.matrix(covariates[k-1, c(3, 5, 6, 7, 8, 9, 12)]))
         else if (featExtMethod == 3)
-          AASeq <- c(as.matrix(covariates[k-1,]), as.matrix(covariates[k,]), as.matrix(covariates[k+1,]))
+          AASeq <- c(as.matrix(covariates[k+1,]), as.matrix(covariates[k,]), as.matrix(covariates[k-1,]))
         
         InputData <- ExtractFeature(AASeq)
         pred <- PredictbyRF(InputData, MZFModels[[i]])
