@@ -2,7 +2,7 @@ import numpy
 import matplotlib.pyplot as plt
 import subprocess
 
-meme_matrix_template = "MEME version 4\n\nALPHABET= ACGT\n\nstrands: + -\n\nBackground letter frequencies (from uniform background):\nA 0.25000 C 0.25000 G 0.25000 T 0.25000\nMOTIFS%s\nletter-probability matrix: alength= 4 w= 18 nsites= 1 E= 0\n%s"
+meme_matrix_template = "MEME version 4\n\nALPHABET= ACGT\n\nstrands: + -\n\nBackground letter frequencies (from uniform background):\nA 0.25000 C 0.25000 G 0.25000 T 0.25000\nMOTIF\t%s\nletter-probability matrix: alength= 4 w= 18 nsites= 1 E= 0\n%s"
 
 def run_cmd(cmd):
     subprocess.call(cmd, shell=True)
