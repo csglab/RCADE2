@@ -3,9 +3,9 @@
 ####################### define executables
 FASTAtoRF="./bin/FASTAtoRF"
 rndForest="./src/_R/_predict.RF.R"
+summaryHTML="./src/_Python/summary_html.py"
 RCOpt="./bin/RCOpt"
 memebin="<MEME Suite bin folder>"
-
 ####################### identify the input arguments
 jobid=$1
 proteins=$2
@@ -16,9 +16,12 @@ if [ "$jobid" = "" ]; then
 	exit
 fi
 
+
 echo "Job ID: "$jobid
 echo "Input FASTA file for the target protein(s): "$proteins
 echo "Input FASTA file for the peaks: "$peaks
+
+
 
 if [ -e "$proteins" ]; then
 	echo "Protein sequence file found."
@@ -84,12 +87,19 @@ sed 's/"//g' $RF_out > $out_file.RF_out.txt
 $RCOpt -rf $out_file.RF_out.txt -fasta $all -out $out_file -mode 3  >>$out_folder/log.step2.txt
 
 
+report=$out_folder/results.report.txt
+results_pfm=${out_folder}/results.PFM.txt
+# echo ${report}
+# [ -f ${report} ] && echo "Found" || echo "Not found"
+# test=${out_file}.PFM.txt
+# echo ${test}
+# [ -f ${test} ] && echo "Found" || echo "Not found"
 
+########################################################################################
+########################################################################################
+########################################################################################
 
-
-
-
-
+### the next lines create and fill log.info.txt
 
 #*****************************************************************************************
 # The following lines check the input/output, and produce appropriate messages
@@ -165,6 +175,17 @@ elif [ "$numC2H2" -le 0 ]; then
 else
 	info="$numC2H2 sequences were found in the input FASTA for C2H2-ZF proteins.\n"$info
 fi
+
+##############################################################################
+echo "Creating HTML report"
+## Selects opt motif , based on the pearson corr (its pval < 0.001).
+## Write matrices in meme format, creates PNG, runs centrimo and graphs it's output.
+## creates summary html table.
+python3 ${summaryHTML} --peaks ${peaks} \
+	--report ${report} \
+	--pfms ${results_pfm} \
+	--prefix ${out_folder} \
+	--job_id ${jobid}
 
 
 ####################### write the appropriate messages to the output
