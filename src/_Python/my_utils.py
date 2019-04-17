@@ -4,6 +4,8 @@ import subprocess
 
 meme_matrix_template = "MEME version 4\n\nALPHABET= ACGT\n\nstrands: + -\n\nBackground letter frequencies (from uniform background):\nA 0.25000 C 0.25000 G 0.25000 T 0.25000\nMOTIF\t%s\nletter-probability matrix: alength= 4 w= 18 nsites= 1 E= 0\n%s"
 
+meme_matrix_template = "MEME version 4\n\nALPHABET= ACGT\n\nstrands: + -\n\nBackground letter frequencies (from uniform background):\nA 0.25000 C 0.25000 G 0.25000 T 0.25000\nMOTIF\t%s\nletter-probability matrix:\n%s"
+
 def run_cmd(cmd):
     subprocess.call(cmd, shell=True)
 
@@ -23,14 +25,14 @@ def select_opt_motif(report_path):
         for line in report:
             current_motif = line.replace("\n", "").split("\t")
 
-            # Do not inclde motifs without correlation to their intial sequence.
+            ## Do not inclde motifs without correlation to
+            #   their intial sequence.
             if float(current_motif[corr_p]) > float(0.001):
                 continue
 
             # Redefine selected motif as the one with the smallest pval.
             if float(current_motif[opt_p]) < float(selected_motif[opt_p]):
                 selected_motif = current_motif
-
 
         if selected_motif[1] == "error":
             print("There is no motif with a CORRELATION_P smaller than 0.001.\nStopping")
